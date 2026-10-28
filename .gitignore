@@ -1,0 +1,72 @@
+# C++ Library Manager - Git忽略文件
+
+# 构建目录
+build/
+build-*
+
+# 可执行文件
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+
+# 对象文件
+*.o
+*.obj
+*.out
+
+# 覆盖率文件
+*.gcno
+*.gcda
+*.gcov
+
+# IDE和编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 临时文件
+tmp/
+*tmp*
+
+# 日志文件
+*.log
+logs/
+
+# 测试报告
+test-*.xml
+*.junit.xml
+
+# 性能基准测试
+*.perf
+*.benchmark*
+
+# 本地配置
+*.local
+*.ini
+
+# 进程核心转储文件
+core
+
+# 操作系统特定文件
+Thumbs.db
+*.DS_Store
+
+# 加密文件
+*.enc
+
+# Python 缓存（注意：不能忽略 *.py，服务端代码 server.py 需要被跟踪）
+__pycache__/
+*.pyc
+.venv/
+
+# 本机工具生成的记忆/缓存，不入库
+.workbuddy-ai/
+test-reports/
+
+# 注意：不要忽略 external/*，子模块目录由 .gitmodules 管理，
+# 一旦被忽略，`git submodule add` 会直接报 "paths are ignored by .gitignore"。

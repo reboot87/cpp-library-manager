@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C++ Library Manager · 库收集</title>
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --surface: #ffffff;
+    --surface-2: #f1efea;
+    --border: #e2e0da;
+    --border-strong: #cfccc4;
+    --text: #1f1f1d;
+    --text-2: #6b6a64;
+    --text-3: #94918a;
+    --accent: #185fa5;
+    --accent-soft: #e6f1fb;
+    --green: #3b6d11;
+    --green-soft: #eaf3de;
+    --amber: #854f0b;
+    --amber-soft: #faeeda;
+    --red: #a32d2d;
+    --red-soft: #fcebeb;
+    --radius: 10px;
+    --mono: ui-monospace, SFMono-Regular, "Cascadia Code", Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .brand { display: flex; align-items: baseline; gap: 10px; }
+  .brand h1 { font-size: 16px; font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+  .brand span { font-size: 12px; color: var(--text-3); }
+  .pills { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; padding: 4px 10px; border-radius: 999px;
+    background: var(--surface-2); color: var(--text-2);
+    border: 1px solid var(--border); white-space: nowrap;
+  }
+  .pill b { font-weight: 600; color: var(--text); }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-3); }
+  .dot.ok { background: #639922; }
+  .dot.warn { background: #ef9f27; }
+  .dot.bad { background: #e24b4a; }
+
+  main {
+    max-width: 1280px; margin: 0 auto; padding: 20px 24px 0;
+    display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 20px;
+    align-items: start;
+  }
+  @media (max-width: 940px) { main { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+  }
+  .panel-head {
+    padding: 14px 18px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .panel-head h2 { font-size: 14px; font-weight: 600; margin: 0; }
+  .panel-head .count {
+    font-size: 12px; color: var(--text-2); background: var(--surface-2);
+    padding: 1px 8px; border-radius: 999px;
+  }
+  .panel-body { padding: 18px; }
+
+  .field { margin-bottom: 14px; }
+  .field:last-of-type { margin-bottom: 0; }
+  label {
+    display: block; font-size: 12px; font-weight: 500;
+    color: var(--text-2); margin-bottom: 6px;
+  }
+  label .req { color: var(--red); }
+  input[type="text"] {
+    width: 100%; padding: 9px 11px; font-size: 13px; color: var(--text);
+    background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: 8px; outline: none; font-family: inherit;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  input[type="text"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(24, 95, 165, .12);
+  }
+  input::placeholder { color: var(--text-3); }
+  .hint { font-size: 11px; color: var(--text-3); margin-top: 5px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  button {
+    font-family: inherit; font-size: 13px; cursor: pointer;
+    border-radius: 8px; border: 1px solid transparent;
+    padding: 8px 14px; transition: background .15s, border-color .15s, opacity .15s;
+  }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  .btn-primary { background: var(--accent); color: #fff; width: 100%; padding: 10px; font-weight: 500; }
+  .btn-primary:hover:not(:disabled) { background: #124a80; }
+  .btn-ghost {
+    background: var(--surface); color: var(--text-2);
+    border-color: var(--border-strong); font-size: 12px; padding: 5px 10px;
+  }
+  .btn-ghost:hover:not(:disabled) { background: var(--surface-2); color: var(--text); }
+  .btn-danger { color: var(--red); border-color: #f0c9c9; background: var(--surface); }
+  .btn-danger:hover:not(:disabled) { background: var(--red-soft); }
+
+  .catalog { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--border-strong); }
+  .catalog h3 { font-size: 12px; font-weight: 500; color: var(--text-2); margin: 0 0 10px; }
+  .chip-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 12px; padding: 5px 10px; border-radius: 999px;
+    background: var(--surface-2); color: var(--text-2);
+    border: 1px solid var(--border); cursor: pointer;
+    transition: background .15s, color .15s, border-color .15s;
+  }
+  .chip:hover { background: var(--accent-soft); color: var(--accent); border-color: #b5d4f4; }
+
+  .lib-grid { display: grid; gap: 12px; }
+  .lib-card {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 16px; background: var(--surface);
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .lib-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .lib-name { font-size: 14px; font-weight: 600; }
+  .lib-url {
+    font-family: var(--mono); font-size: 11px; color: var(--text-3);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .lib-desc { font-size: 13px; color: var(--text-2); }
+  .tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 4px;
+    background: var(--surface-2); color: var(--text-2); border: 1px solid var(--border);
+  }
+  .tag.mono { font-family: var(--mono); }
+  .tag.good { background: var(--green-soft); color: var(--green); border-color: #c0dd97; }
+  .tag.mid { background: var(--amber-soft); color: var(--amber); border-color: #fac775; }
+  .tag.dirty { background: var(--red-soft); color: var(--red); border-color: #f7c1c1; }
+  .tag.src { background: var(--accent-soft); color: var(--accent); border-color: #b5d4f4; }
+  .cand-warn { font-size: 11px; color: var(--amber); margin-top: 4px; }
+  .lib-actions { display: flex; gap: 8px; margin-top: 2px; }
+
+  .empty {
+    text-align: center; padding: 44px 20px; color: var(--text-3); font-size: 13px;
+  }
+  .empty strong { display: block; color: var(--text-2); font-size: 14px; margin-bottom: 4px; font-weight: 500; }
+
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .filter-bar input[type="text"] { flex: 1 1 200px; width: auto; }
+  select {
+    font-family: inherit; font-size: 12px; padding: 8px 10px;
+    border: 1px solid var(--border-strong); border-radius: 8px;
+    background: var(--surface); color: var(--text-2); outline: none; cursor: pointer;
+  }
+  select:focus { border-color: var(--accent); }
+
+  .wide { max-width: 1280px; margin: 20px auto 0; padding: 0 24px; }
+  .criteria { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .crit label { margin-bottom: 5px; }
+  .chip-row { display: flex; align-items: center; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .chip-label { font-size: 12px; color: var(--text-2); font-weight: 500; }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .auto-actions { display: flex; align-items: center; gap: 10px; margin: 16px 0 0; flex-wrap: wrap; }
+  .auto-actions .spacer { flex: 1; }
+  .cand-list { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; max-height: 540px; overflow-y: auto; }
+  .cand {
+    display: flex; gap: 12px; padding: 12px 14px; align-items: flex-start;
+    border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+  }
+  .cand:hover { background: var(--surface-2); }
+  .cand.failed { opacity: .6; }
+  .cand input[type="checkbox"] {
+    margin-top: 3px; width: 15px; height: 15px; flex: none; accent-color: var(--accent);
+  }
+  .cand-body { min-width: 0; flex: 1; }
+  .cand-top { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .cand-name { font-size: 13px; font-weight: 600; }
+  .cand-full { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+  .cand-desc { font-size: 12px; color: var(--text-2); margin-top: 3px; }
+  .cand-fail { font-size: 11px; color: var(--red); margin-top: 4px; }
+
+  .log-wrap { max-width: 1280px; margin: 20px auto 32px; padding: 0 24px; }
+  .log-panel {
+    background: #1f1f1d; border-radius: var(--radius); overflow: hidden;
+    border: 1px solid #2c2c2a;
+  }
+  .log-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 14px; border-bottom: 1px solid #2c2c2a;
+    color: #b4b2a9; font-size: 12px;
+  }
+  .log-head button {
+    margin-left: auto; background: transparent; color: #94918a;
+    border: 1px solid #444441; font-size: 11px; padding: 3px 9px;
+  }
+  .log-head button:hover { color: #e2e0da; border-color: #6b6a64; }
+  #log {
+    margin: 0; padding: 12px 14px; height: 150px; overflow-y: auto;
+    font-family: var(--mono); font-size: 12px; line-height: 1.7;
+    color: #d3d1c7; white-space: pre-wrap; word-break: break-all;
+  }
+  #log .ok { color: #97c459; }
+  #log .err { color: #f09595; }
+  #log .cmd { color: #85b7eb; }
+  #log .dim { color: #888780; }
+
+  #toasts {
+    position: fixed; right: 20px; bottom: 20px; z-index: 100;
+    display: flex; flex-direction: column; gap: 8px; align-items: flex-end;
+  }
+  .toast {
+    background: var(--surface); border: 1px solid var(--border-strong);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px; padding: 10px 14px; font-size: 13px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.08); max-width: 380px;
+    animation: slide .18s ease-out;
+  }
+  .toast.ok { border-left-color: #639922; }
+  .toast.err { border-left-color: #e24b4a; }
+  @keyframes slide { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .spinner {
+    display: inline-block; width: 11px; height: 11px; margin-right: 7px;
+    border: 2px solid rgba(255,255,255,.4); border-top-color: #fff;
+    border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -1px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <h1>C++ Library Manager</h1>
+    <span>库收集控制台</span>
+  </div>
+  <div class="pills" id="pills">
+    <span class="pill"><span class="dot"></span> 连接中…</span>
+  </div>
+</header>
+
+<main>
+  <aside class="panel">
+    <div class="panel-head"><h2>手动收集</h2></div>
+    <div class="panel-body">
+      <form id="collect-form" autocomplete="off">
+        <div class="field">
+          <label for="url">仓库地址 <span class="req">*</span></label>
+          <input type="text" id="url" placeholder="https://github.com/gabime/spdlog.git" required>
+          <div class="hint">支持 https:// 、ssh:// 或 git@host:repo</div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="name">目录名</label>
+            <input type="text" id="name" placeholder="自动推导">
+          </div>
+          <div class="field">
+            <label for="branch">分支</label>
+            <input type="text" id="branch" placeholder="默认分支">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="category">分类</label>
+          <input type="text" id="category" placeholder="logging / parser / testing …">
+        </div>
+
+        <div class="field">
+          <label for="description">描述</label>
+          <input type="text" id="description" placeholder="一句话说明这个库干什么">
+        </div>
+
+        <button type="submit" class="btn-primary" id="submit-btn">开始收集</button>
+      </form>
+
+      <div class="catalog">
+        <h3>推荐库（点击填入表单）</h3>
+        <div class="chip-list" id="catalog"><span class="hint">加载中…</span></div>
+      </div>
+    </div>
+  </aside>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>已收集的库</h2>
+      <span class="count" id="lib-count">0</span>
+      <button class="btn-ghost" id="refresh-btn" style="margin-left:auto">刷新</button>
+    </div>
+    <div class="panel-body">
+      <div class="filter-bar">
+        <input type="text" id="lib-search" placeholder="筛选名称 / 地址 / 描述 / 标签">
+        <select id="lib-category"><option value="">全部分类</option></select>
+        <select id="lib-sort">
+          <option value="name">按名称</option>
+          <option value="quality">按完整度</option>
+          <option value="recent">按收集时间</option>
+        </select>
+      </div>
+      <div class="lib-grid" id="lib-list">
+        <div class="empty"><strong>还没有收集任何库</strong>在左侧填一个仓库地址，或点下面的推荐库开始。</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="wide">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>自动筛选</h2>
+      <span class="hint">从 GitHub 搜索 C++ 库，按规则自动过滤后批量收集</span>
+      <button class="btn-ghost" id="auto-reset" style="margin-left:auto">重置条件</button>
+    </div>
+    <div class="panel-body">
+      <div class="criteria">
+        <div class="crit">
+          <label for="d-keywords">关键词</label>
+          <input type="text" id="d-keywords" placeholder="json / http / logging">
+        </div>
+        <div class="crit">
+          <label for="d-topics">Topic</label>
+          <input type="text" id="d-topics" placeholder="header-only, cli">
+        </div>
+        <div class="crit">
+          <label for="d-stars">最小 star</label>
+          <input type="text" id="d-stars" value="100">
+        </div>
+        <div class="crit">
+          <label for="d-days">最近更新（天）</label>
+          <input type="text" id="d-days" value="730">
+        </div>
+        <div class="crit">
+          <label for="d-limit">返回条数</label>
+          <input type="text" id="d-limit" value="30">
+        </div>
+        <div class="crit">
+          <label for="d-size">体积上限（KB）</label>
+          <input type="text" id="d-size" value="0" placeholder="0 = 不限">
+        </div>
+      </div>
+
+      <div class="chip-row">
+        <span class="chip-label">数据源</span>
+        <div class="chip-list" id="d-sources"></div>
+      </div>
+
+      <div class="auto-actions">
+        <button class="btn-primary" id="discover-btn" style="width:auto;padding:9px 22px">开始筛选</button>
+        <span class="hint" id="auto-status"></span>
+        <div class="spacer"></div>
+        <button class="btn-ghost" id="select-passed">全选通过项</button>
+        <button class="btn-ghost" id="select-none">清空选择</button>
+        <button class="btn-primary" id="batch-collect" style="width:auto;padding:9px 18px" disabled>收集选中 (0)</button>
+      </div>
+
+      <div class="cand-list" id="candidates">
+        <div class="empty"><strong>还没有筛选结果</strong>填好条件后点「开始筛选」，系统会去 GitHub 搜索并逐条判定。</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="log-wrap">
+  <div class="log-panel">
+    <div class="log-head">
+      <span>操作日志</span>
+      <button id="clear-log">清空</button>
+    </div>
+    <pre id="log"></pre>
+  </div>
+</div>
+
+<div id="toasts"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = (id) => document.getElementById(id);
+  const logEl = $("log");
+
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    })[c]);
+  }
+
+  function appendLog(text, kind) {
+    if (!text) return;
+    const span = document.createElement("span");
+    span.className = kind || "";
+    span.textContent = text.endsWith("\n") ? text : text + "\n";
+    logEl.appendChild(span);
+    logEl.scrollTop = logEl.scrollHeight;
+  }
+
+  function toast(message, kind) {
+    const el = document.createElement("div");
+    el.className = "toast " + (kind || "");
+    el.textContent = message;
+    $("toasts").appendChild(el);
+    setTimeout(() => el.remove(), kind === "err" ? 6000 : 3200);
+  }
+
+  async function api(path, options) {
+    const res = await fetch(path, Object.assign({ headers: { "Content-Type": "application/json" } }, options));
+    let payload;
+    try {
+      payload = await res.json();
+    } catch (e) {
+      throw new Error("服务端返回了非 JSON 响应（HTTP " + res.status + "）");
+    }
+    if (payload.log) appendLog(payload.log, "dim");
+    if (!res.ok || payload.ok === false) {
+      throw new Error(payload.error || ("请求失败：HTTP " + res.status));
+    }
+    return payload.data;
+  }
+
+  function renderStatus(s) {
+    const repo = s.isOwnRepo
+      ? '<span class="dot ok"></span> 独立仓库'
+      : '<span class="dot warn"></span> 首次收集时自动 git init';
+    const git = s.gitAvailable
+      ? '<span class="dot ok"></span> <b>' + esc(s.gitVersion.replace("git version ", "git ")) + "</b>"
+      : '<span class="dot bad"></span> 未找到 git';
+
+    $("pills").innerHTML =
+      '<span class="pill">' + git + "</span>" +
+      '<span class="pill">' + repo + "</span>" +
+      '<span class="pill">已收集 <b>' + s.collected + "</b></span>" +
+      '<span class="pill">推荐 <b>' + s.catalog + "</b></span>";
+  }
+
+  function qualityClass(score) {
+    if (score >= 80) return "good";
+    if (score >= 60) return "mid";
+    return "";
+  }
+
+  function renderLibraries(items) {
+    const box = $("lib-list");
+    $("lib-count").textContent = items.length;
+
+    if (!items.length) {
+      box.innerHTML =
+        '<div class="empty"><strong>还没有收集任何库</strong>' +
+        "在左侧填一个仓库地址，或点下面的推荐库开始。</div>";
+      return;
+    }
+
+    box.innerHTML = items.map((lib) => {
+      const tags = [];
+      if (lib.quality != null) {
+        tags.push('<span class="tag ' + qualityClass(lib.quality) + '">完整度 ' + lib.quality + "</span>");
+      }
+      if (lib.license) tags.push('<span class="tag">' + esc(lib.license) + "</span>");
+      if (lib.category) tags.push('<span class="tag">' + esc(lib.category) + "</span>");
+      if (lib.headerOnly) tags.push('<span class="tag">header-only</span>');
+      if (lib.commit) tags.push('<span class="tag mono">' + esc(lib.commit) + "</span>");
+      if (lib.branch) tags.push('<span class="tag mono">' + esc(lib.branch) + "</span>");
+      if (lib.dirty) tags.push('<span class="tag dirty">有未提交改动</span>');
+      if (lib.exists === false) tags.push('<span class="tag dirty">目录缺失</span>');
+
+      return (
+        '<div class="lib-card" data-name="' + esc(lib.name) + '">' +
+          '<div class="lib-top"><span class="lib-name">' + esc(lib.name) + "</span></div>" +
+          '<div class="lib-url" title="' + esc(lib.url) + '">' + esc(lib.url) + "</div>" +
+          (lib.description ? '<div class="lib-desc">' + esc(lib.description) + "</div>" : "") +
+          '<div class="tags">' + tags.join("") + "</div>" +
+          '<div class="lib-actions">' +
+            '<button class="btn-ghost" data-action="update">更新</button>' +
+            '<button class="btn-ghost btn-danger" data-action="remove">移除</button>' +
+          "</div>" +
+        "</div>"
+      );
+    }).join("");
+  }
+
+  function renderCatalog(items) {
+    const box = $("catalog");
+    if (!items.length) {
+      box.innerHTML = '<span class="hint">data/catalog/recommended.json 为空</span>';
+      return;
+    }
+    box.innerHTML = items.map((item, i) =>
+      '<button type="button" class="chip" data-idx="' + i + '">' + esc(item.name) + "</button>"
+    ).join("");
+    box._data = items;
+  }
+
+  const state = { libraries: [], candidates: [], selected: new Set(), autoData: null };
+
+  function populateCategories(items) {
+    const select = $("lib-category");
+    const current = select.value;
+    const cats = Array.from(new Set(items.map((i) => i.category).filter(Boolean))).sort();
+    select.innerHTML = '<option value="">全部分类</option>' +
+      cats.map((c) => '<option value="' + esc(c) + '">' + esc(c) + "</option>").join("");
+    select.value = cats.includes(current) ? current : "";
+  }
+
+  function applyLibFilters() {
+    const keyword = $("lib-search").value.trim().toLowerCase();
+    const category = $("lib-category").value;
+    const sort = $("lib-sort").value;
+
+    let items = state.libraries.slice();
+
+    if (keyword) {
+      items = items.filter((lib) =>
+        [lib.name, lib.url, lib.description, lib.category, (lib.tags || []).join(" ")]
+          .join(" ").toLowerCase().includes(keyword)
+      );
+    }
+    if (category) {
+      items = items.filter((lib) => lib.category === category);
+    }
+
+    items.sort((a, b) => {
+      if (sort === "quality") return (b.quality || 0) - (a.quality || 0);
+      if (sort === "recent") return String(b.collectedAt || "").localeCompare(String(a.collectedAt || ""));
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    });
+
+    renderLibraries(items);
+  }
+
+  async function refresh() {
+    try {
+      const [status, libs, catalog] = await Promise.all([
+        api("/api/status"), api("/api/libraries"), api("/api/catalog"),
+      ]);
+      renderStatus(status);
+      state.libraries = libs;
+      populateCategories(libs);
+      applyLibFilters();
+      renderCatalog(catalog);
+    } catch (err) {
+      $("pills").innerHTML = '<span class="pill"><span class="dot bad"></span> 服务未连接</span>';
+      appendLog("[错误] " + err.message, "err");
+    }
+  }
+
+  const form = $("collect-form");
+  const submitBtn = $("submit-btn");
+  const nameInput = $("name");
+  let nameTouched = false;
+
+  nameInput.addEventListener("input", () => { nameTouched = nameInput.value.trim() !== ""; });
+
+  $("url").addEventListener("input", () => {
+    if (nameTouched) return;
+    const raw = $("url").value.trim().replace(/\/+$/, "");
+    const tail = raw.replace(/\.git$/, "").replace(/^.*[\/:]/, "");
+    nameInput.value = /^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(tail) ? tail : "";
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const url = $("url").value.trim();
+    if (!url) { toast("请填写仓库地址", "err"); return; }
+
+    const payload = {
+      url,
+      name: nameInput.value.trim(),
+      branch: $("branch").value.trim(),
+      category: $("category").value.trim(),
+      description: $("description").value.trim(),
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span>克隆中…';
+    appendLog("$ git submodule add -- " + url + " external/" + (payload.name || "<自动>"), "cmd");
+
+    try {
+      const entry = await api("/api/collect", { method: "POST", body: JSON.stringify(payload) });
+      toast("已收集 " + entry.name, "ok");
+      appendLog("[完成] " + entry.name + " → " + entry.path + " @ " + (entry.commit || "?"), "ok");
+      form.reset();
+      nameTouched = false;
+      await refresh();
+    } catch (err) {
+      toast(err.message, "err");
+      appendLog("[失败] " + err.message, "err");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "开始收集";
+    }
+  });
+
+  $("lib-list").addEventListener("click", async (event) => {
+    const btn = event.target.closest("button[data-action]");
+    if (!btn) return;
+    const card = btn.closest(".lib-card");
+    const name = card.dataset.name;
+    const action = btn.dataset.action;
+
+    if (action === "remove") {
+      if (!confirm("确定移除 " + name + " ？\n会执行 git submodule deinit + rm，并删除本地目录。")) return;
+      btn.disabled = true;
+      try {
+        await api("/api/libraries/" + encodeURIComponent(name), { method: "DELETE" });
+        toast("已移除 " + name, "ok");
+        appendLog("[完成] 已移除 " + name, "ok");
+        await refresh();
+      } catch (err) {
+        toast(err.message, "err");
+        appendLog("[失败] " + err.message, "err");
+      } finally {
+        btn.disabled = false;
+      }
+      return;
+    }
+
+    if (action === "update") {
+      btn.disabled = true;
+      btn.textContent = "更新中…";
+      try {
+        const data = await api("/api/libraries/" + encodeURIComponent(name) + "/update", { method: "POST" });
+        toast(name + " 已更新到 " + (data.commit || "最新"), "ok");
+        await refresh();
+      } catch (err) {
+        toast(err.message, "err");
+        appendLog("[失败] " + err.message, "err");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "更新";
+      }
+    }
+  });
+
+  $("catalog").addEventListener("click", (event) => {
+    const chip = event.target.closest(".chip[data-idx]");
+    if (!chip) return;
+    const item = $("catalog")._data[Number(chip.dataset.idx)];
+    if (!item) return;
+
+    $("url").value = item.url || "";
+    nameInput.value = item.name || "";
+    nameTouched = true;
+    $("branch").value = item.branch || "";
+    $("category").value = item.category || "";
+    $("description").value = item.description || "";
+    $("url").focus();
+    toast("已填入 " + item.name + "，确认后点「开始收集」");
+  });
+
+  function debounce(fn, wait) {
+    let timer;
+    return function () {
+      const args = arguments;
+      clearTimeout(timer);
+      timer = setTimeout(() => fn.apply(this, args), wait);
+    };
+  }
+
+  // ---------- 已收集列表筛选 ----------
+  $("lib-search").addEventListener("input", debounce(applyLibFilters, 120));
+  $("lib-category").addEventListener("change", applyLibFilters);
+  $("lib-sort").addEventListener("change", applyLibFilters);
+  $("refresh-btn").addEventListener("click", refresh);
+  $("clear-log").addEventListener("click", () => { logEl.textContent = ""; });
+
+  // ---------- 自动筛选 ----------
+  const SOURCE_OPTIONS = [
+    { id: "github", label: "GitHub 搜索" },
+    { id: "vcpkg", label: "vcpkg" },
+    { id: "conan", label: "Conan" },
+    { id: "official", label: "官方/标准扩展" },
+  ];
+  const selectedSources = new Set(SOURCE_OPTIONS.map((s) => s.id));
+
+  function sourceLabel(id) {
+    const found = SOURCE_OPTIONS.find((s) => s.id === id);
+    return found ? found.label : id;
+  }
+
+  function renderSourceChips() {
+    $("d-sources").innerHTML = SOURCE_OPTIONS.map((s) =>
+      '<button type="button" class="chip' + (selectedSources.has(s.id) ? " active" : "") +
+      '" data-src="' + s.id + '">' + esc(s.label) + "</button>"
+    ).join("");
+  }
+
+  $("d-sources").addEventListener("click", (event) => {
+    const chip = event.target.closest(".chip[data-src]");
+    if (!chip) return;
+    const id = chip.dataset.src;
+    if (selectedSources.has(id)) {
+      if (selectedSources.size === 1) { toast("至少保留一个数据源", "err"); return; }
+      selectedSources.delete(id);
+    } else {
+      selectedSources.add(id);
+    }
+    renderSourceChips();
+  });
+
+  // 许可证只展示、不筛选：卡片上会显示 SPDX 标识（含 GPL / 未知），
+  // 用不用由使用者自己判断。
+  function formatStars(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(n);
+  }
+
+  function updateBatchButton() {
+    const btn = $("batch-collect");
+    const count = state.selected.size;
+    btn.textContent = "收集选中 (" + count + ")";
+    btn.disabled = count === 0;
+  }
+
+  function renderCandidates() {
+    const box = $("candidates");
+    const list = state.candidates;
+    if (!list.length) {
+      box.innerHTML = '<div class="empty"><strong>没有匹配的仓库</strong>放宽条件再试一次。</div>';
+      updateBatchButton();
+      return;
+    }
+
+    box.innerHTML = list.map((c) => {
+      const tierClass = c.tier === "优秀" ? "good" : c.tier === "良好" ? "mid" : c.tier === "数据不足" ? "src" : "";
+      const tags = [
+        '<span class="tag ' + tierClass + '">' + esc(c.tier) + " " + c.score + "</span>",
+        '<span class="tag mono">★ ' + (c.stars == null ? "?" : formatStars(c.stars)) + "</span>",
+        c.license
+          ? '<span class="tag">' + esc(c.license) + "</span>"
+          : '<span class="tag dirty">许可证未知</span>',
+      ];
+      if (c.updatedDaysAgo != null) tags.push('<span class="tag">' + c.updatedDaysAgo + " 天前</span>");
+      (c.sources || []).forEach((s) => tags.push('<span class="tag src">' + esc(sourceLabel(s)) + "</span>"));
+      if (c.alreadyCollected) tags.push('<span class="tag mid">已收集</span>');
+      if (!c.passed) tags.push('<span class="tag dirty">未通过</span>');
+
+      return '<label class="cand' + (c.passed ? "" : " failed") + '">' +
+        '<input type="checkbox" class="cand-check" data-name="' + esc(c.name) + '"' +
+          (state.selected.has(c.name) ? " checked" : "") +
+          (c.alreadyCollected ? " disabled" : "") + ">" +
+        '<div class="cand-body">' +
+          '<div class="cand-top">' +
+            '<span class="cand-name">' + esc(c.name) + "</span>" +
+            '<span class="cand-full">' + esc(c.fullName) + "</span>" +
+            tags.join("") +
+          "</div>" +
+          (c.description ? '<div class="cand-desc">' + esc(c.description) + "</div>" : "") +
+          (c.failures.length ? '<div class="cand-fail">未通过：' + esc(c.failures.join("；")) + "</div>" : "") +
+          (c.warnings && c.warnings.length
+            ? '<div class="cand-warn">提示：' + esc(c.warnings.join("；")) + "</div>"
+            : "") +
+        "</div>" +
+      "</label>";
+    }).join("");
+
+    updateBatchButton();
+  }
+
+  $("candidates").addEventListener("change", (event) => {
+    const cb = event.target.closest(".cand-check");
+    if (!cb) return;
+    if (cb.checked) state.selected.add(cb.dataset.name);
+    else state.selected.delete(cb.dataset.name);
+    updateBatchButton();
+  });
+
+  async function runDiscover() {
+    const keywords = $("d-keywords").value.trim();
+    const topics = $("d-topics").value.split(",").map((s) => s.trim()).filter(Boolean);
+    if (!keywords && !topics.length) {
+      toast("请至少填写关键词或一个 topic", "err");
+      return;
+    }
+
+    const btn = $("discover-btn");
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>搜索中…';
+    $("auto-status").textContent = "";
+
+    try {
+      const data = await api("/api/discover", {
+        method: "POST",
+        body: JSON.stringify({
+          keywords,
+          topics,
+          minStars: Number($("d-stars").value) || 0,
+          updatedWithinDays: Number($("d-days").value) || 0,
+          limit: Number($("d-limit").value) || 30,
+          maxSizeKb: Number($("d-size").value) || 0,
+          sources: Array.from(selectedSources),
+        }),
+      });
+
+      state.autoData = data;
+      state.candidates = data.candidates;
+      // 只自动勾选"通过且评分达到良好(60)"的项：vcpkg / Conan 有些条目元信息很少，
+      // 虽然通过了硬性条件，但分数很低，不该被默认带走。
+      state.selected = new Set(
+        data.candidates
+          .filter((c) => c.passed && !c.alreadyCollected && c.score >= 60)
+          .map((c) => c.name)
+      );
+      renderCandidates();
+
+      const breakdown = Object.keys(data.perSource || {}).map((k) => {
+        const label = data.sourceLabels[k] || k;
+        const meta = (data.meta || {})[k] || {};
+        let text = label + " " + data.perSource[k];
+        if (meta.totalCount != null && meta.totalCount > data.perSource[k]) {
+          text += "（共 " + meta.totalCount + "）";
+        }
+        return text;
+      }).join(" · ");
+
+      const gh = (data.meta || {}).github || {};
+      const truncated = gh.totalCount != null && gh.totalCount > data.perSource.github;
+      $("auto-status").textContent =
+        "合并 " + data.total + " 个 · 通过 " + data.passedCount + " 个 · 自动勾选 " +
+        state.selected.size + " 个 ｜ " + breakdown +
+        (truncated ? " ｜ GitHub 共 " + gh.totalCount + " 条，本次按 star 取回前 " +
+          data.perSource.github + " 条" : "");
+      appendLog("[筛选] " + breakdown, "cmd");
+      appendLog("[筛选] 合并 " + data.total + " 个，通过 " + data.passedCount + " 个", "dim");
+      (data.errors || []).forEach((e) => appendLog("[源失败] " + e, "err"));
+      (Object.keys(data.notes || {})).forEach((k) =>
+        appendLog("[提示] " + (data.sourceLabels[k] || k) + "：" + data.notes[k], "dim")
+      );
+    } catch (err) {
+      toast(err.message, "err");
+      appendLog("[失败] " + err.message, "err");
+      $("auto-status").textContent = "筛选失败";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "开始筛选";
+    }
+  }
+
+  async function batchCollect() {
+    const picked = state.candidates.filter((c) => state.selected.has(c.name));
+    if (!picked.length) return;
+
+    const btn = $("batch-collect");
+    btn.disabled = true;
+    let ok = 0;
+    let fail = 0;
+
+    for (let i = 0; i < picked.length; i++) {
+      const c = picked[i];
+      btn.innerHTML = '<span class="spinner"></span>' + (i + 1) + "/" + picked.length;
+      appendLog("$ git submodule add -- " + c.url + " external/" + c.name, "cmd");
+      try {
+        await api("/api/collect", {
+          method: "POST",
+          body: JSON.stringify({
+            url: c.url,
+            name: c.name,
+            category: c.category || (c.topics || [])[0] || "",
+            description: c.description || "",
+          }),
+        });
+        ok++;
+        state.selected.delete(c.name);
+        c.alreadyCollected = true;
+        appendLog("[完成] " + c.name, "ok");
+      } catch (err) {
+        fail++;
+        appendLog("[失败] " + c.name + "：" + err.message, "err");
+      }
+    }
+
+    toast("批量收集完成：成功 " + ok + "，失败 " + fail, fail ? "err" : "ok");
+    await refresh();
+    state.candidates.forEach((c) => {
+      if (state.libraries.some((l) => l.name === c.name)) c.alreadyCollected = true;
+    });
+    renderCandidates();
+    updateBatchButton();
+  }
+
+  $("discover-btn").addEventListener("click", runDiscover);
+  $("batch-collect").addEventListener("click", batchCollect);
+
+  $("select-passed").addEventListener("click", () => {
+    state.selected = new Set(
+      state.candidates.filter((c) => c.passed && !c.alreadyCollected).map((c) => c.name)
+    );
+    renderCandidates();
+  });
+
+  $("select-none").addEventListener("click", () => {
+    state.selected.clear();
+    renderCandidates();
+  });
+
+  $("auto-reset").addEventListener("click", () => {
+    $("d-keywords").value = "";
+    $("d-topics").value = "";
+    $("d-stars").value = "100";
+    $("d-days").value = "730";
+    $("d-limit").value = "30";
+    $("d-size").value = "0";
+    selectedSources.clear();
+    SOURCE_OPTIONS.forEach((s) => selectedSources.add(s.id));
+    renderSourceChips();
+    state.candidates = [];
+    state.selected.clear();
+    $("auto-status").textContent = "";
+    renderCandidates();
+  });
+
+  renderSourceChips();
+  appendLog("C++ Library Manager 控制台已就绪", "dim");
+  refresh();
+})();
+</script>
+</body>
+</html>

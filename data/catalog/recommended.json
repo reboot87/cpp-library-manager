@@ -1,0 +1,72 @@
+[
+  {
+    "id": "nlohmann-json",
+    "name": "json",
+    "url": "https://github.com/nlohmann/json.git",
+    "branch": "",
+    "description": "JSON for Modern C++ —— 现代 C++ JSON 解析库，头文件即可用",
+    "category": "parser",
+    "tags": ["json", "parser", "header-only"],
+    "license": "MIT"
+  },
+  {
+    "id": "spdlog",
+    "name": "spdlog",
+    "url": "https://github.com/gabime/spdlog.git",
+    "branch": "",
+    "description": "极快的 C++ 日志库，支持异步日志与线程安全",
+    "category": "logging",
+    "tags": ["logging", "async", "header-only"],
+    "license": "MIT"
+  },
+  {
+    "id": "fmt",
+    "name": "fmt",
+    "url": "https://github.com/fmtlib/fmt.git",
+    "branch": "",
+    "description": "现代 C++ 格式化库，std::format 的实现原型",
+    "category": "formatting",
+    "tags": ["formatting", "strings"],
+    "license": "MIT"
+  },
+  {
+    "id": "chaiscript",
+    "name": "chaiscript",
+    "url": "https://github.com/ChaiScript/ChaiScript.git",
+    "branch": "",
+    "description": "面向 C++ 的嵌入式脚本语言，支持动态脚本与函数调用",
+    "category": "scripting",
+    "tags": ["scripting", "embedded"],
+    "license": "BSD-3-Clause"
+  },
+  {
+    "id": "doctest",
+    "name": "doctest",
+    "url": "https://github.com/doctest/doctest.git",
+    "branch": "",
+    "description": "单头文件的 C++ 测试框架，编译极快",
+    "category": "testing",
+    "tags": ["testing", "header-only"],
+    "license": "MIT"
+  },
+  {
+    "id": "argparse",
+    "name": "argparse",
+    "url": "https://github.com/p-ranav/argparse.git",
+    "branch": "",
+    "description": "现代 C++ 命令行参数解析，单头文件",
+    "category": "cli",
+    "tags": ["cli", "header-only"],
+    "license": "MIT"
+  },
+  {
+    "id": "cpp-httplib",
+    "name": "cpp-httplib",
+    "url": "https://github.com/yhirose/cpp-httplib.git",
+    "branch": "",
+    "description": "单头文件的 C++ HTTP/HTTPS 服务端与客户端库",
+    "category": "network",
+    "tags": ["http", "header-only"],
+    "license": "MIT"
+  }
+]

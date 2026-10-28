@@ -1,0 +1,146 @@
+[
+  {
+    "name": "abseil-cpp",
+    "fullName": "abseil/abseil-cpp",
+    "url": "https://github.com/abseil/abseil-cpp",
+    "description": "Google 的 C++ 基础库集合，补充标准库缺失的组件",
+    "category": "官方 / Google",
+    "license": "Apache-2.0",
+    "tags": ["google", "base", "standard-library"]
+  },
+  {
+    "name": "googletest",
+    "fullName": "google/googletest",
+    "url": "https://github.com/google/googletest",
+    "description": "Google 的 C++ 单元测试框架，业界使用最广的测试库之一",
+    "category": "官方 / Google",
+    "license": "BSD-3-Clause",
+    "tags": ["google", "testing"]
+  },
+  {
+    "name": "benchmark",
+    "fullName": "google/benchmark",
+    "url": "https://github.com/google/benchmark",
+    "description": "Google 的微基准测试框架，用于测量代码片段性能",
+    "category": "官方 / Google",
+    "license": "Apache-2.0",
+    "tags": ["google", "benchmark", "performance"]
+  },
+  {
+    "name": "glog",
+    "fullName": "google/glog",
+    "url": "https://github.com/google/glog",
+    "description": "Google 的 C++ 日志库，提供分级日志与运行时控制",
+    "category": "官方 / Google",
+    "license": "Apache-2.0",
+    "tags": ["google", "logging"]
+  },
+  {
+    "name": "protobuf",
+    "fullName": "protocolbuffers/protobuf",
+    "url": "https://github.com/protocolbuffers/protobuf",
+    "description": "Google 的协议缓冲区，跨语言的序列化方案",
+    "category": "官方 / Google",
+    "license": "BSD-3-Clause",
+    "tags": ["google", "serialization"]
+  },
+  {
+    "name": "re2",
+    "fullName": "google/re2",
+    "url": "https://github.com/google/re2",
+    "description": "Google 的正则表达式库，保证线性时间匹配",
+    "category": "官方 / Google",
+    "license": "BSD-3-Clause",
+    "tags": ["google", "regex"]
+  },
+  {
+    "name": "highway",
+    "fullName": "google/highway",
+    "url": "https://github.com/google/highway",
+    "description": "Google 的 SIMD 可移植抽象层，一份代码适配多种指令集",
+    "category": "官方 / Google",
+    "license": "Apache-2.0",
+    "tags": ["google", "simd", "performance"]
+  },
+  {
+    "name": "asio",
+    "fullName": "boostorg/asio",
+    "url": "https://github.com/boostorg/asio",
+    "description": "Boost.Asio 网络与异步 I/O 库，C++ 网络编程的事实标准",
+    "category": "官方 / Boost",
+    "license": "BSL-1.0",
+    "tags": ["boost", "network", "async", "header-only"]
+  },
+  {
+    "name": "beast",
+    "fullName": "boostorg/beast",
+    "url": "https://github.com/boostorg/beast",
+    "description": "基于 Boost.Asio 的 HTTP 与 WebSocket 协议实现",
+    "category": "官方 / Boost",
+    "license": "BSL-1.0",
+    "tags": ["boost", "http", "websocket", "header-only"]
+  },
+  {
+    "name": "filesystem",
+    "fullName": "boostorg/filesystem",
+    "url": "https://github.com/boostorg/filesystem",
+    "description": "Boost.Filesystem 文件系统操作库，std::filesystem 的前身",
+    "category": "官方 / Boost",
+    "license": "BSL-1.0",
+    "tags": ["boost", "filesystem"]
+  },
+  {
+    "name": "multiprecision",
+    "fullName": "boostorg/multiprecision",
+    "url": "https://github.com/boostorg/multiprecision",
+    "description": "Boost.Multiprecision 任意精度数值类型",
+    "category": "官方 / Boost",
+    "license": "BSL-1.0",
+    "tags": ["boost", "math", "header-only"]
+  },
+  {
+    "name": "hana",
+    "fullName": "boostorg/hana",
+    "url": "https://github.com/boostorg/hana",
+    "description": "Boost.Hana 现代 C++ 元编程库，类型与值的统一抽象",
+    "category": "官方 / Boost",
+    "license": "BSL-1.0",
+    "tags": ["boost", "metaprogramming", "header-only"]
+  },
+  {
+    "name": "container",
+    "fullName": "boostorg/container",
+    "url": "https://github.com/boostorg/container",
+    "description": "Boost.Container 标准容器扩展，含 flat_map 与 stable_vector",
+    "category": "官方 / Boost",
+    "license": "BSL-1.0",
+    "tags": ["boost", "containers", "header-only"]
+  },
+  {
+    "name": "GSL",
+    "fullName": "microsoft/GSL",
+    "url": "https://github.com/microsoft/GSL",
+    "description": "C++ 核心准则支持库，提供 span、not_null 等标准库扩展类型",
+    "category": "标准扩展",
+    "license": "MIT",
+    "tags": ["microsoft", "guidelines", "header-only"]
+  },
+  {
+    "name": "range-v3",
+    "fullName": "ericniebler/range-v3",
+    "url": "https://github.com/ericniebler/range-v3",
+    "description": "C++20 ranges 的参考实现，标准库范围扩展的先行版本",
+    "category": "标准扩展",
+    "license": "BSL-1.0",
+    "tags": ["ranges", "standard-library", "header-only"]
+  },
+  {
+    "name": "eigen",
+    "fullName": "libeigen/eigen",
+    "url": "https://gitlab.com/libeigen/eigen",
+    "description": "线性代数模板库，矩阵与向量运算的事实标准",
+    "category": "标准扩展",
+    "license": "MPL-2.0",
+    "tags": ["math", "linear-algebra", "header-only"]
+  }
+]

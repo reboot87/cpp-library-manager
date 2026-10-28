@@ -1,0 +1,67 @@
+[
+  {
+    "id": "argparse",
+    "name": "argparse",
+    "url": "https://github.com/p-ranav/argparse.git",
+    "path": "external/argparse",
+    "branch": "master",
+    "commit": "7d093f8",
+    "description": "现代 C++ 命令行参数解析库",
+    "category": "cli",
+    "tags": [],
+    "license": "MIT",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": true,
+    "collectedAt": "2026-10-28 15:41:33"
+  },
+  {
+    "id": "json",
+    "name": "json",
+    "url": "https://github.com/nlohmann/json.git",
+    "path": "external/json",
+    "branch": "develop",
+    "commit": "da83aa92c",
+    "description": "JSON for Modern C++",
+    "category": "bson",
+    "tags": [],
+    "license": "",
+    "quality": 80,
+    "qualityHits": [
+      "README",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": true,
+    "collectedAt": "2026-10-28 16:08:50"
+  },
+  {
+    "id": "spdlog",
+    "name": "spdlog",
+    "url": "https://github.com/gabime/spdlog.git",
+    "path": "external/spdlog",
+    "branch": "v1.x",
+    "commit": "6d9805df",
+    "description": "极快的 C++ 日志库，支持异步日志与线程安全",
+    "category": "logging",
+    "tags": [],
+    "license": "MIT",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 16:29:47"
+  }
+]
