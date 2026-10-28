@@ -170,7 +170,8 @@ def save_libraries(items: list[dict]) -> None:
 # --------------------------------------------------------------------------
 
 def detect_license(path: Path) -> str:
-    for name in ("LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING", "COPYING.txt", "LICENCE"):
+    for name in ("LICENSE", "LICENSE.txt", "LICENSE.md", "COPYING", "COPYING.txt", "LICENCE",
+                 "LICENSE.MIT", "LICENSE-APACHE", "LICENSE.BSD", "LICENSE-MIT", "COPYING.LESSER"):
         f = path / name
         if f.is_file():
             try:
@@ -180,14 +181,22 @@ def detect_license(path: Path) -> str:
             low = text.lower()
             if "apache license" in low:
                 return "Apache-2.0"
+            if "boost software license" in low:
+                return "BSL-1.0"
             if "gnu lesser general public" in low:
                 return "LGPL"
             if "gnu general public license" in low:
                 return "GPL"
             if "mozilla public license" in low:
                 return "MPL-2.0"
-            if "mit license" in low or "permission is hereby granted, free of charge" in low:
+            # zlib 的许可证正文里没有 "zlib" 字样，只能靠这两句特征句识别
+            # （raylib 就是这么写的，之前被误判成 Other）。
+            if "altered source versions must be plainly marked" in low and "provided \"as-is\"" in low:
+                return "Zlib"
+            if "permission is hereby granted, free of charge" in low or "mit license" in low:
                 return "MIT"
+            if "permission to use, copy, modify, and/or distribute this software" in low:
+                return "ISC"
             if "redistribution and use in source and binary forms" in low:
                 return "BSD"
             if "the unlicense" in low:

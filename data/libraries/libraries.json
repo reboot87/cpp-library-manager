@@ -22,6 +22,57 @@
     "collectedAt": "2026-10-28 15:41:33"
   },
   {
+    "id": "cpp-pinyin",
+    "name": "cpp-pinyin",
+    "url": "https://github.com/wolfgitpr/cpp-pinyin.git",
+    "path": "external/cpp-pinyin",
+    "branch": "main",
+    "commit": "e4dd831",
+    "description": "汉字转拼音（带声调），做拼音标注和拼音输入练习",
+    "category": "识字",
+    "tags": [
+      "拼音",
+      "汉字"
+    ],
+    "license": "Apache-2.0",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:28:58"
+  },
+  {
+    "id": "cppjieba",
+    "name": "cppjieba",
+    "url": "https://github.com/yanyiwu/cppjieba.git",
+    "path": "external/cppjieba",
+    "branch": "master",
+    "commit": "b9c787e",
+    "description": "中文分词，把绘本句子切成词，做逐词高亮与点读",
+    "category": "识字",
+    "tags": [
+      "中文",
+      "分词",
+      "NLP"
+    ],
+    "license": "MIT",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": true,
+    "collectedAt": "2026-10-28 17:28:30"
+  },
+  {
     "id": "json",
     "name": "json",
     "url": "https://github.com/nlohmann/json.git",
@@ -31,7 +82,7 @@
     "description": "JSON for Modern C++",
     "category": "bson",
     "tags": [],
-    "license": "",
+    "license": "MIT",
     "quality": 80,
     "qualityHits": [
       "README",
@@ -41,6 +92,106 @@
     ],
     "headerOnly": true,
     "collectedAt": "2026-10-28 16:08:50"
+  },
+  {
+    "id": "msdf-atlas-gen",
+    "name": "msdf-atlas-gen",
+    "url": "https://github.com/Chlumsky/msdf-atlas-gen.git",
+    "path": "external/msdf-atlas-gen",
+    "branch": "master",
+    "commit": "6148900",
+    "description": "生成 MSDF 字体图集，汉字放大到任意尺寸都不糊，适合动画里的字",
+    "category": "识字",
+    "tags": [
+      "字体",
+      "图集",
+      "渲染"
+    ],
+    "license": "MIT",
+    "quality": 60,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:29:57"
+  },
+  {
+    "id": "raylib",
+    "name": "raylib",
+    "url": "https://github.com/raysan5/raylib.git",
+    "path": "external/raylib",
+    "branch": "master",
+    "commit": "debc1f6b",
+    "description": "轻量 2D 游戏/动画框架，绘图、音频、输入一体，儿童 App 的理想底座",
+    "category": "动画",
+    "tags": [
+      "2D",
+      "游戏引擎",
+      "绘图"
+    ],
+    "license": "Zlib",
+    "quality": 80,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:32:18"
+  },
+  {
+    "id": "rlottie",
+    "name": "rlottie",
+    "url": "https://github.com/Samsung/rlottie.git",
+    "path": "external/rlottie",
+    "branch": "master",
+    "commit": "ea06d2f",
+    "description": "Lottie 动画播放器，设计师用 AE 做的动画可直接跑",
+    "category": "动画",
+    "tags": [
+      "lottie",
+      "动画",
+      "矢量"
+    ],
+    "license": "MIT",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:32:49"
+  },
+  {
+    "id": "sherpa-onnx",
+    "name": "sherpa-onnx",
+    "url": "https://github.com/k2-fsa/sherpa-onnx.git",
+    "path": "external/sherpa-onnx",
+    "branch": "master",
+    "commit": "2f764d1d",
+    "description": "离线语音合成 + 识别一体，TTS 朗读绘本、ASR 听懂孩子说话",
+    "category": "语音",
+    "tags": [
+      "TTS",
+      "ASR",
+      "离线"
+    ],
+    "license": "Apache-2.0",
+    "quality": 80,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:27:49"
   },
   {
     "id": "spdlog",
@@ -63,5 +214,80 @@
     ],
     "headerOnly": false,
     "collectedAt": "2026-10-28 16:29:47"
+  },
+  {
+    "id": "tweeny",
+    "name": "tweeny",
+    "url": "https://github.com/mobius3/tweeny.git",
+    "path": "external/tweeny",
+    "branch": "master",
+    "commit": "d24aac5",
+    "description": "补间动画与缓动函数，做角色位移、缩放、弹跳等过渡效果",
+    "category": "动画",
+    "tags": [
+      "补间",
+      "缓动"
+    ],
+    "license": "MIT",
+    "quality": 80,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:33:14"
+  },
+  {
+    "id": "utf8proc",
+    "name": "utf8proc",
+    "url": "https://github.com/JuliaStrings/utf8proc.git",
+    "path": "external/utf8proc",
+    "branch": "master",
+    "commit": "f72a402",
+    "description": "Unicode 归一化与字符属性，正确按字切分汉字、判断部首笔画",
+    "category": "识字",
+    "tags": [
+      "unicode",
+      "文本"
+    ],
+    "license": "MIT",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:29:27"
+  },
+  {
+    "id": "whisper.cpp",
+    "name": "whisper.cpp",
+    "url": "https://github.com/ggml-org/whisper.cpp.git",
+    "path": "external/whisper.cpp",
+    "branch": "master",
+    "commit": "284029c0",
+    "description": "离线语音识别（ASR），把小朋友说的话转成文字，支持中英文",
+    "category": "语音",
+    "tags": [
+      "语音识别",
+      "ASR",
+      "离线"
+    ],
+    "license": "MIT",
+    "quality": 100,
+    "qualityHits": [
+      "README",
+      "LICENSE",
+      "构建脚本",
+      "CI",
+      "测试目录"
+    ],
+    "headerOnly": false,
+    "collectedAt": "2026-10-28 17:26:11"
   }
 ]

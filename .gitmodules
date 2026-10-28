@@ -7,3 +7,30 @@
 [submodule "external/spdlog"]
 	path = external/spdlog
 	url = https://github.com/gabime/spdlog.git
+[submodule "external/whisper.cpp"]
+	path = external/whisper.cpp
+	url = https://github.com/ggml-org/whisper.cpp.git
+[submodule "external/sherpa-onnx"]
+	path = external/sherpa-onnx
+	url = https://github.com/k2-fsa/sherpa-onnx.git
+[submodule "external/cppjieba"]
+	path = external/cppjieba
+	url = https://github.com/yanyiwu/cppjieba.git
+[submodule "external/cpp-pinyin"]
+	path = external/cpp-pinyin
+	url = https://github.com/wolfgitpr/cpp-pinyin.git
+[submodule "external/utf8proc"]
+	path = external/utf8proc
+	url = https://github.com/JuliaStrings/utf8proc.git
+[submodule "external/msdf-atlas-gen"]
+	path = external/msdf-atlas-gen
+	url = https://github.com/Chlumsky/msdf-atlas-gen.git
+[submodule "external/raylib"]
+	path = external/raylib
+	url = https://github.com/raysan5/raylib.git
+[submodule "external/rlottie"]
+	path = external/rlottie
+	url = https://github.com/Samsung/rlottie.git
+[submodule "external/tweeny"]
+	path = external/tweeny
+	url = https://github.com/mobius3/tweeny.git
